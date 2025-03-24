@@ -27,8 +27,8 @@ export default function LandingPage() {
       <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-7xl font-bold mb-12 font-['Playfair_Display']" 
           style={{ 
-            color: "#3366FF", 
-            textShadow: "0 2px 4px rgba(51, 102, 255, 0.5)"
+            color: "#D4AF37", 
+            textShadow: "0 2px 4px rgba(212, 175, 55, 0.5)"
           }}
         >
           Hello Giva Team
@@ -37,12 +37,12 @@ export default function LandingPage() {
         <div className="inline-block relative overflow-hidden">
           <Button 
             onClick={handleViewSubmission}
-            className="text-lg md:text-xl font-bold py-4 px-8 rounded-md hover:shadow-lg hover:scale-105 transition-all duration-300 transform bg-gradient-to-r from-[#3366FF] via-[#5C85FF] to-[#3366FF] text-white"
+            className="text-lg md:text-xl font-bold py-4 px-8 rounded-md hover:shadow-lg hover:scale-105 transition-all duration-300 transform bg-gradient-to-r from-[#D4AF37] via-[#F5E7A3] to-[#D4AF37] text-[#1A1A1A]"
             style={{
-              boxShadow: "0 4px 14px 0 rgba(51, 102, 255, 0.39)"
+              boxShadow: "0 4px 14px 0 rgba(212, 175, 55, 0.39)"
             }}
           >
-            URL Shortener
+            View Anirudh submission
           </Button>
         </div>
       </div>

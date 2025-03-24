@@ -76,46 +76,46 @@ export default function UrlShortenerForm() {
 
   return (
     <>
-      <Card className="bg-white rounded-lg shadow-lg mb-8">
+      <Card className="bg-[#2A2A2A] rounded-lg shadow-lg mb-8 border border-[#D4AF37]/30">
         <CardContent className="p-6 md:p-8">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <Label htmlFor="longUrl" className="block text-sm font-medium text-gray-700 mb-1">
-                Enter your URL
+              <Label htmlFor="longUrl" className="block text-sm font-medium text-[#F5E7A3] mb-1">
+                Enter your URL to be transformed
               </Label>
               <Input
                 {...form.register("longUrl")}
                 id="longUrl"
                 placeholder="https://example.com/your-long-url-to-shorten"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3366FF]/50 transition-all"
+                className="w-full px-4 py-3 rounded-md border border-[#D4AF37]/50 bg-[#1A1A1A] text-[#F5E7A3] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 transition-all"
               />
               {form.formState.errors.longUrl && (
                 <p className="text-xs text-red-500 mt-1">
                   {form.formState.errors.longUrl.message}
                 </p>
               )}
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-[#F5E7A3]/70 mt-1">
                 Enter a valid URL including http:// or https://
               </p>
             </div>
             
             <div>
-              <Label htmlFor="customAlias" className="block text-sm font-medium text-gray-700 mb-1">
-                Custom Alias (Optional)
+              <Label htmlFor="customAlias" className="block text-sm font-medium text-[#F5E7A3] mb-1">
+                Custom Gem Name (Optional)
               </Label>
               <Input
                 {...form.register("customAlias")}
                 id="customAlias"
-                placeholder="my-custom-name"
-                className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3366FF]/50 transition-all"
+                placeholder="my-custom-gem"
+                className="w-full px-4 py-3 rounded-md border border-[#D4AF37]/50 bg-[#1A1A1A] text-[#F5E7A3] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 transition-all"
               />
               {form.formState.errors.customAlias && (
                 <p className="text-xs text-red-500 mt-1">
                   {form.formState.errors.customAlias.message}
                 </p>
               )}
-              <p className="text-xs text-gray-500 mt-1">
-                Leave empty for randomly generated short URL
+              <p className="text-xs text-[#F5E7A3]/70 mt-1">
+                Leave empty for a uniquely crafted gem ID
               </p>
             </div>
             
@@ -123,8 +123,8 @@ export default function UrlShortenerForm() {
               <Button
                 type="submit"
                 disabled={shortenMutation.isPending}
-                className="relative w-full bg-gradient-to-r from-[#3366FF] via-[#5C85FF] to-[#3366FF] text-white font-bold py-3 px-6 rounded-md hover:shadow-lg transition-all duration-300"
-                style={{ boxShadow: "0 4px 14px 0 rgba(51, 102, 255, 0.39)" }}
+                className="relative w-full bg-gradient-to-r from-[#D4AF37] via-[#F5E7A3] to-[#D4AF37] text-[#1A1A1A] font-bold py-3 px-6 rounded-md hover:shadow-lg transition-all duration-300"
+                style={{ boxShadow: "0 4px 14px 0 rgba(212, 175, 55, 0.39)" }}
               >
                 {shortenMutation.isPending ? (
                   <>
@@ -132,7 +132,7 @@ export default function UrlShortenerForm() {
                     Processing...
                   </>
                 ) : (
-                  "Shorten URL"
+                  "Create Gem URL"
                 )}
               </Button>
             </div>

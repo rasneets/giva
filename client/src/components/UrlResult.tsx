@@ -26,7 +26,8 @@ export default function UrlResult({ data }: UrlResultProps) {
       .then(() => {
         setIsCopied(true);
         toast({
-          title: "URL copied to clipboard!",
+          title: "Gem URL copied to clipboard!",
+          description: "Your crafted link is ready to shine.",
           duration: 2000,
         });
         
@@ -52,10 +53,10 @@ export default function UrlResult({ data }: UrlResultProps) {
   });
 
   return (
-    <Card className="bg-white rounded-lg shadow-lg mb-8">
+    <Card className="bg-[#2A2A2A] rounded-lg shadow-lg mb-8 border border-[#D4AF37]/30">
       <CardContent className="p-6 md:p-8">
-        <h3 className="text-xl font-bold text-[#1A1A1A] mb-4">
-          Your Shortened URL
+        <h3 className="text-xl font-bold text-[#D4AF37] mb-4">
+          Your Crafted Gem URL
         </h3>
         
         <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -63,19 +64,20 @@ export default function UrlResult({ data }: UrlResultProps) {
             <Input
               value={data.shortUrl}
               readOnly
-              className="w-full px-4 py-3 bg-[#F9F5EB] rounded-md border border-gray-300 focus:outline-none"
+              className="w-full px-4 py-3 bg-[#1A1A1A] rounded-md border border-[#D4AF37]/50 text-[#F5E7A3] focus:outline-none"
             />
           </div>
           <Button
             onClick={handleCopy}
-            className="bg-gradient-to-r from-[#3366FF] via-[#5C85FF] to-[#3366FF] text-white font-semibold py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            className="bg-gradient-to-r from-[#D4AF37] via-[#F5E7A3] to-[#D4AF37] text-[#1A1A1A] font-semibold py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            style={{ boxShadow: "0 2px 8px 0 rgba(212, 175, 55, 0.39)" }}
           >
             <Clipboard className="w-5 h-5" />
-            {isCopied ? "Copied!" : "Copy URL"}
+            {isCopied ? "Copied!" : "Copy Gem"}
           </Button>
         </div>
         
-        <div className="flex flex-col md:flex-row justify-between text-sm text-gray-500">
+        <div className="flex flex-col md:flex-row justify-between text-sm text-[#F5E7A3]/70">
           <div>Created: <span>{formattedDate}</span></div>
           <div>Clicks: <span>{data.clicks}</span></div>
         </div>
