@@ -37,17 +37,17 @@ export default function RedirectPage({ params }: RedirectPageProps) {
   }, [shortCode, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F0F5FF] p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] p-4">
       {error ? (
-        <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold text-red-500 mb-4">{error}</h1>
-          <p className="mb-4">Redirecting to homepage in a few seconds...</p>
+        <div className="text-center bg-[#2A2A2A] p-8 rounded-lg shadow-lg border border-[#D4AF37]/30">
+          <h1 className="text-2xl font-bold text-[#D4AF37] mb-4">{error}</h1>
+          <p className="mb-4 text-[#F5E7A3]/70">Returning to collection page in a few seconds...</p>
         </div>
       ) : (
-        <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-          <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#3366FF]" />
-          <h1 className="text-2xl font-bold mb-4">Redirecting...</h1>
-          <p>You are being redirected to the original URL.</p>
+        <div className="text-center bg-[#2A2A2A] p-8 rounded-lg shadow-lg border border-[#D4AF37]/30">
+          <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#D4AF37]" />
+          <h1 className="text-2xl font-bold mb-4 text-[#F5E7A3]">Polishing Your Gem...</h1>
+          <p className="text-[#F5E7A3]/70">You are being redirected to the original destination.</p>
         </div>
       )}
     </div>
