@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 import { log } from './vite';
+import dotenv from 'dotenv'; // Import dotenv package
+import { MongoClient } from 'mongodb';
+
+dotenv.config(); // Load environment variables from .env file
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -7,10 +11,10 @@ if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
 
-let cached = global.mongoose;
+let cached = (globalThis as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (globalThis as any).mongoose = { conn: null, promise: null };
 }
 
 async function connectToDatabase() {
@@ -23,15 +27,21 @@ async function connectToDatabase() {
     
     mongoose.set('strictQuery', false);
     
-    cached.promise = mongoose.connect(MONGODB_URI as string)
-      .then((mongoose) => {
-        log('Connected to MongoDB', 'mongodb');
-        return mongoose;
-      })
-      .catch((err) => {
-        log(`Error connecting to MongoDB: ${err.message}`, 'mongodb');
-        throw err;
-      });
+    if (!MONGODB_URI) {
+      throw new Error('MONGODB_URI is undefined');
+    }
+    const client = new MongoClient(MONGODB_URI);
+    
+    try {
+      await client.connect();
+      log('Connected to MongoDB', 'mongodb');
+      return client;
+    } catch (error: any) {
+      log(`Error connecting to MongoDB: ${error.message}`, 'mongodb');
+      throw error;
+    } finally {
+      await client.close();
+    }
   }
   
   cached.conn = await cached.promise;

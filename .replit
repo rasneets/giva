@@ -39,3 +39,6 @@ task = "packager.installForAll"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[env]
+MONGODB_URI = "mongodb+srv://Ani:@nirudh12@anirudh.mk2hf.mongodb.net/?retryWrites=true&w=majority&appName=Anirudh"
