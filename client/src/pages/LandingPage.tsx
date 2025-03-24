@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
-import ThreeJSJewelry from "@/components/ThreeJSJewelry";
+import ThreeJSBackground from "@/components/ThreeJSBackground";
 import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
@@ -21,7 +21,7 @@ export default function LandingPage() {
       background: "linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%)"
     }}>
       <div ref={containerRef} className="absolute top-0 left-0 w-full h-full z-0 opacity-80">
-        {mounted && <ThreeJSJewelry containerRef={containerRef} />}
+        {mounted && <ThreeJSBackground containerRef={containerRef} />}
       </div>
       
       <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
@@ -42,7 +42,7 @@ export default function LandingPage() {
               boxShadow: "0 4px 14px 0 rgba(51, 102, 255, 0.39)"
             }}
           >
-            View Anirudh Submission
+            URL Shortener
           </Button>
         </div>
       </div>
