@@ -68,7 +68,7 @@ export default function UrlResult({ data }: UrlResultProps) {
           </div>
           <Button
             onClick={handleCopy}
-            className="bg-gradient-to-r from-[#B76E79] via-[#EDBDC3] to-[#B76E79] text-white font-semibold py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            className="bg-gradient-to-r from-[#3366FF] via-[#5C85FF] to-[#3366FF] text-white font-semibold py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
           >
             <Clipboard className="w-5 h-5" />
             {isCopied ? "Copied!" : "Copy URL"}

@@ -55,7 +55,7 @@ export default function RecentUrls() {
                         href={`/${url.shortCode}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-[#3CB4C5] hover:underline"
+                        className="text-[#3366FF] hover:underline"
                       >
                         {window.location.origin}/{url.shortCode}
                       </a>
@@ -66,7 +66,7 @@ export default function RecentUrls() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#D4AF37] bg-opacity-10 text-[#D4AF37]">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#3366FF] bg-opacity-10 text-[#3366FF]">
                         {url.clicks}
                       </span>
                     </td>
