@@ -74,10 +74,19 @@ export class DatabaseStorage implements IStorage {
   }
   
   async incrementUrlClicks(shortCode: string): Promise<void> {
-    await db
-      .update(urls)
-      .set({ clicks: urls.clicks + 1 })
+    // First get the current URL record
+    const [url] = await db
+      .select()
+      .from(urls)
       .where(eq(urls.shortCode, shortCode));
+    
+    if (url) {
+      // Then increment the clicks count
+      await db
+        .update(urls)
+        .set({ clicks: url.clicks + 1 })
+        .where(eq(urls.shortCode, shortCode));
+    }
   }
   
   async getRecentUrls(limit: number = 10): Promise<Url[]> {
