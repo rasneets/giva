@@ -21,25 +21,50 @@ export interface IStorage {
 export class DatabaseStorage implements IStorage {
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+    await connectToDatabase();
+    const user = await UserModel.findById(id).lean();
+    
+    if (!user) return undefined;
+    
+    return {
+      id: parseInt(user._id.toString()),
+      username: user.username,
+      password: user.password
+    } as User;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user;
+    await connectToDatabase();
+    const user = await UserModel.findOne({ username }).lean();
+    
+    if (!user) return undefined;
+    
+    return {
+      id: parseInt(user._id.toString()),
+      username: user.username,
+      password: user.password
+    } as User;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
-    return user;
+    await connectToDatabase();
+    const newUser = new UserModel({
+      username: insertUser.username,
+      password: insertUser.password
+    });
+    
+    const savedUser = await newUser.save();
+    
+    return {
+      id: parseInt(savedUser._id.toString()),
+      username: savedUser.username,
+      password: savedUser.password
+    } as User;
   }
   
   // URL shortener methods
   async createShortUrl(longUrl: string, customAlias?: string): Promise<Url> {
+    await connectToDatabase();
     // Generate short code, use custom alias if provided and available
     const shortCode = customAlias || this.generateShortCode();
     
@@ -52,57 +77,70 @@ export class DatabaseStorage implements IStorage {
     }
     
     // Insert into database
-    const [url] = await db
-      .insert(urls)
-      .values({
-        shortCode,
-        longUrl,
-        customAlias: customAlias || null,
-      })
-      .returning();
+    const newUrl = new UrlModel({
+      shortCode,
+      longUrl,
+      customAlias: customAlias || null,
+      createdAt: new Date(),
+      clicks: 0
+    });
     
-    return url;
+    const savedUrl = await newUrl.save();
+    
+    return {
+      id: parseInt(savedUrl._id.toString()),
+      shortCode: savedUrl.shortCode,
+      longUrl: savedUrl.longUrl,
+      customAlias: savedUrl.customAlias,
+      createdAt: savedUrl.createdAt,
+      clicks: savedUrl.clicks
+    } as Url;
   }
   
   async getUrlByShortCode(shortCode: string): Promise<Url | undefined> {
-    const [url] = await db
-      .select()
-      .from(urls)
-      .where(eq(urls.shortCode, shortCode));
+    await connectToDatabase();
+    const url = await UrlModel.findOne({ shortCode }).lean();
     
-    return url;
+    if (!url) return undefined;
+    
+    return {
+      id: parseInt(url._id.toString()),
+      shortCode: url.shortCode,
+      longUrl: url.longUrl,
+      customAlias: url.customAlias,
+      createdAt: url.createdAt,
+      clicks: url.clicks
+    } as Url;
   }
   
   async incrementUrlClicks(shortCode: string): Promise<void> {
-    // First get the current URL record
-    const [url] = await db
-      .select()
-      .from(urls)
-      .where(eq(urls.shortCode, shortCode));
-    
-    if (url) {
-      // Then increment the clicks count
-      await db
-        .update(urls)
-        .set({ clicks: url.clicks + 1 })
-        .where(eq(urls.shortCode, shortCode));
-    }
+    await connectToDatabase();
+    await UrlModel.findOneAndUpdate(
+      { shortCode },
+      { $inc: { clicks: 1 } }
+    );
   }
   
   async getRecentUrls(limit: number = 10): Promise<Url[]> {
-    return db
-      .select()
-      .from(urls)
-      .orderBy(urls.createdAt)
-      .limit(limit);
+    await connectToDatabase();
+    const urls = await UrlModel.find({})
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean();
+    
+    return urls.map(url => ({
+      id: parseInt(url._id.toString()),
+      shortCode: url.shortCode,
+      longUrl: url.longUrl,
+      customAlias: url.customAlias,
+      createdAt: url.createdAt,
+      clicks: url.clicks
+    })) as Url[];
   }
   
   async isShortCodeAvailable(shortCode: string): Promise<boolean> {
-    const [existingUrl] = await db
-      .select()
-      .from(urls)
-      .where(eq(urls.shortCode, shortCode));
-    
+    await connectToDatabase();
+    const existingUrl = await UrlModel.findOne({ shortCode }).lean();
     return !existingUrl;
   }
   
