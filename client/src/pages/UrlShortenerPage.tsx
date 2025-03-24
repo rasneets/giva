@@ -8,7 +8,7 @@ export default function UrlShortenerPage() {
 
   return (
     <div className="min-h-screen font-['Montserrat']" style={{
-      background: "linear-gradient(135deg, #F9F5EB 0%, #F0EBE3 100%)"
+      background: "linear-gradient(135deg, #F0F5FF 0%, #E6EFFF 100%)"
     }}>
       <nav className="bg-[#1A1A1A] text-[#F9F5EB] py-4 px-6 shadow-md">
         <div className="max-w-6xl mx-auto flex justify-between items-center">

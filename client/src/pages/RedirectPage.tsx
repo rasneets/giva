@@ -37,7 +37,7 @@ export default function RedirectPage({ params }: RedirectPageProps) {
   }, [shortCode, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F9F5EB] p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F0F5FF] p-4">
       {error ? (
         <div className="text-center bg-white p-8 rounded-lg shadow-lg">
           <h1 className="text-2xl font-bold text-red-500 mb-4">{error}</h1>
@@ -45,7 +45,7 @@ export default function RedirectPage({ params }: RedirectPageProps) {
         </div>
       ) : (
         <div className="text-center bg-white p-8 rounded-lg shadow-lg">
-          <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#D4AF37]" />
+          <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-[#3366FF]" />
           <h1 className="text-2xl font-bold mb-4">Redirecting...</h1>
           <p>You are being redirected to the original URL.</p>
         </div>
