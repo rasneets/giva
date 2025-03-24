@@ -74,6 +74,9 @@ export function serveStatic(app: Express) {
   const distPath = path.resolve(__dirname, "public");
 
   if (!fs.existsSync(distPath)) {
+    console.error(
+      `Error: No Output Directory named "public" found after the Build completed. You can configure the Output Directory in your Project Settings. Learn More: https://vercel.link/missing-public-directory`
+    );
     throw new Error(
       `Could not find the build directory: ${distPath}, make sure to build the client first`,
     );
