@@ -1,7 +1,7 @@
-import { users, type User, type InsertUser, urls, type Url, type InsertUrl } from "@shared/schema";
-import { eq } from "drizzle-orm";
-import { db } from "./db";
+import { type User, type InsertUser, type Url } from "@shared/schema";
 import { nanoid } from "nanoid";
+import connectToDatabase from "./mongodb";
+import { IUser, IUrl, UserModel, UrlModel } from "./models";
 
 // Update the IStorage interface to include URL shortener methods
 export interface IStorage {
