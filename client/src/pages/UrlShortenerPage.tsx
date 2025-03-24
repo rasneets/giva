@@ -13,13 +13,13 @@ export default function UrlShortenerPage() {
       <nav className="bg-[#1A1A1A] text-[#F9F5EB] py-4 px-6 shadow-md">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center">
-            <span className="font-['Playfair_Display'] text-[#D4AF37] text-2xl font-bold">Gem URL</span>
+            <span className="font-['Playfair_Display'] text-[#3366FF] text-2xl font-bold">URL Shortener</span>
           </div>
           <div>
             <Button 
               variant="ghost" 
               onClick={() => navigate("/")}
-              className="text-[#F9F5EB] hover:text-[#D4AF37] transition-colors"
+              className="text-[#F9F5EB] hover:text-[#3366FF] transition-colors"
             >
               Back to Home
             </Button>
@@ -33,7 +33,7 @@ export default function UrlShortenerPage() {
             Transform Your Links
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Create elegant, shortened URLs that sparkle like fine jewelry. Perfect for sharing in presentations, social media, or reports.
+            Create simple, shortened URLs perfect for sharing in presentations, social media, or reports.
           </p>
         </div>
 
