@@ -8,32 +8,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API endpoint for shortening URLs
   app.post("/api/shorten", async (req: Request, res: Response) => {
     try {
+      console.log("Received shorten request:", req.body);
+      
       // Validate request body
       const validationResult = urlFormSchema.safeParse(req.body);
       
       if (!validationResult.success) {
         const errorMessage = fromZodError(validationResult.error).message;
+        console.error("Validation error:", errorMessage);
         return res.status(400).json({ message: errorMessage });
       }
       
       const { longUrl, customAlias } = validationResult.data;
+      console.log("Validated data:", { longUrl, customAlias });
       
       // Create the short URL
-      const url = await storage.createShortUrl(longUrl, customAlias);
-      
-      // Construct the full short URL
-      const shortUrl = `${req.protocol}://${req.get("host")}/${url.shortCode}`;
-      
-      return res.status(201).json({
-        id: url.id,
-        shortCode: url.shortCode,
-        longUrl: url.longUrl,
-        shortUrl,
-        createdAt: url.createdAt,
-        clicks: url.clicks
-      });
+      try {
+        const url = await storage.createShortUrl(longUrl, customAlias);
+        console.log("URL created successfully:", url);
+        
+        // Construct the full short URL
+        const shortUrl = `${req.protocol}://${req.get("host")}/${url.shortCode}`;
+        
+        return res.status(201).json({
+          id: url.id,
+          shortCode: url.shortCode,
+          longUrl: url.longUrl,
+          shortUrl,
+          createdAt: url.createdAt,
+          clicks: url.clicks
+        });
+      } catch (storageError: any) {
+        console.error("Storage error:", storageError);
+        return res.status(500).json({ 
+          message: "Database error while creating short URL",
+          error: storageError.message
+        });
+      }
     } catch (error: any) {
-      return res.status(400).json({ message: error.message || "Failed to create short URL" });
+      console.error("Unhandled error in /api/shorten:", error);
+      return res.status(500).json({ 
+        message: "Server error", 
+        error: error.message || "Unknown error"
+      });
     }
   });
   

@@ -64,37 +64,51 @@ export class DatabaseStorage implements IStorage {
   
   // URL shortener methods
   async createShortUrl(longUrl: string, customAlias?: string): Promise<Url> {
-    await connectToDatabase();
-    // Generate short code, use custom alias if provided and available
-    const shortCode = customAlias || this.generateShortCode();
-    
-    // Check if custom alias is available if specified
-    if (customAlias) {
-      const isAvailable = await this.isShortCodeAvailable(customAlias);
-      if (!isAvailable) {
-        throw new Error("Custom alias is already in use. Please choose a different one.");
+    try {
+      console.log("Starting createShortUrl with longUrl:", longUrl, "customAlias:", customAlias);
+      await connectToDatabase();
+      console.log("Database connection established");
+      
+      // Generate short code, use custom alias if provided and available
+      const shortCode = customAlias || this.generateShortCode();
+      console.log("Generated shortCode:", shortCode);
+      
+      // Check if custom alias is available if specified
+      if (customAlias) {
+        console.log("Checking if custom alias is available");
+        const isAvailable = await this.isShortCodeAvailable(customAlias);
+        console.log("Custom alias available:", isAvailable);
+        if (!isAvailable) {
+          throw new Error("Custom alias is already in use. Please choose a different one.");
+        }
       }
+      
+      // Insert into database
+      console.log("Creating new URL document in MongoDB");
+      const newUrl = new UrlModel({
+        shortCode,
+        longUrl,
+        customAlias: customAlias || null,
+        createdAt: new Date(),
+        clicks: 0
+      });
+      
+      console.log("Saving URL document to MongoDB");
+      const savedUrl = await newUrl.save();
+      console.log("URL saved successfully:", savedUrl);
+      
+      return {
+        id: savedUrl._id.toString(),
+        shortCode: savedUrl.shortCode,
+        longUrl: savedUrl.longUrl,
+        customAlias: savedUrl.customAlias,
+        createdAt: savedUrl.createdAt,
+        clicks: savedUrl.clicks
+      } as Url;
+    } catch (error) {
+      console.error("Error in createShortUrl:", error);
+      throw error;
     }
-    
-    // Insert into database
-    const newUrl = new UrlModel({
-      shortCode,
-      longUrl,
-      customAlias: customAlias || null,
-      createdAt: new Date(),
-      clicks: 0
-    });
-    
-    const savedUrl = await newUrl.save();
-    
-    return {
-      id: parseInt(savedUrl._id.toString()),
-      shortCode: savedUrl.shortCode,
-      longUrl: savedUrl.longUrl,
-      customAlias: savedUrl.customAlias,
-      createdAt: savedUrl.createdAt,
-      clicks: savedUrl.clicks
-    } as Url;
   }
   
   async getUrlByShortCode(shortCode: string): Promise<Url | undefined> {
