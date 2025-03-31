@@ -27,16 +27,14 @@ async function connectToDatabase() {
     
     mongoose.set('strictQuery', false);
     
-    if (!MONGODB_URI) {
-      throw new Error('MONGODB_URI is undefined');
-    }
-    
     try {
-      // Use mongoose connection instead of MongoClient
-      // Add connection options for better reliability
-      cached.promise = mongoose.connect(MONGODB_URI, {
-        serverSelectionTimeoutMS: 10000, // Timeout after 10s
-        socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+      cached.promise = mongoose.connect(MONGODB_URI as string, {
+        bufferCommands: false, // Disable mongoose buffering
+        serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+        socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+        maxPoolSize: 10, // Maintain up to 10 socket connections
+        retryWrites: true, // Retry failed writes
+        w: 'majority', // Write to primary and replicas
       });
       
       cached.conn = await cached.promise;
@@ -44,7 +42,7 @@ async function connectToDatabase() {
       return cached.conn;
     } catch (error: any) {
       log(`Error connecting to MongoDB: ${error.message}`, 'mongodb');
-      cached.promise = null; // Clear the promise so we can retry
+      cached.promise = null;
       throw error;
     }
   }
@@ -53,7 +51,7 @@ async function connectToDatabase() {
     cached.conn = await cached.promise;
     return cached.conn;
   } catch (error: any) {
-    cached.promise = null; // Clear the promise so we can retry
+    cached.promise = null;
     log(`Error waiting for MongoDB connection: ${error.message}`, 'mongodb');
     throw error;
   }
