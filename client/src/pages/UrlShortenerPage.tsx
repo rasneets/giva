@@ -32,9 +32,6 @@ export default function UrlShortenerPage() {
           <h2 className="text-3xl md:text-4xl font-['Playfair_Display'] font-bold text-[#D4AF37] mb-4">
             Transform Your Links into Gems
           </h2>
-          <p className="text-[#F5E7A3] max-w-2xl mx-auto">
-            Create elegant, shortened URLs perfect for sharing in presentations, social media, or reports. Our jewelry-inspired design ensures your links shine brilliantly.
-          </p>
         </div>
 
         <UrlShortenerForm />

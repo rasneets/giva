@@ -30,22 +30,33 @@ async function connectToDatabase() {
     if (!MONGODB_URI) {
       throw new Error('MONGODB_URI is undefined');
     }
-    const client = new MongoClient(MONGODB_URI);
     
     try {
-      await client.connect();
+      // Use mongoose connection instead of MongoClient
+      // Add connection options for better reliability
+      cached.promise = mongoose.connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 10000, // Timeout after 10s
+        socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+      });
+      
+      cached.conn = await cached.promise;
       log('Connected to MongoDB', 'mongodb');
-      return client;
+      return cached.conn;
     } catch (error: any) {
       log(`Error connecting to MongoDB: ${error.message}`, 'mongodb');
+      cached.promise = null; // Clear the promise so we can retry
       throw error;
-    } finally {
-      await client.close();
     }
   }
   
-  cached.conn = await cached.promise;
-  return cached.conn;
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error: any) {
+    cached.promise = null; // Clear the promise so we can retry
+    log(`Error waiting for MongoDB connection: ${error.message}`, 'mongodb');
+    throw error;
+  }
 }
 
 export default connectToDatabase;
