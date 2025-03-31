@@ -22,12 +22,12 @@ export class DatabaseStorage implements IStorage {
   // User methods
   async getUser(id: number): Promise<User | undefined> {
     await connectToDatabase();
-    const user = await UserModel.findById(id).lean();
+    const user = await UserModel.findById(id).lean() as any;
     
     if (!user) return undefined;
     
     return {
-      id: parseInt(user._id.toString()),
+      id: user._id.toString(),
       username: user.username,
       password: user.password
     } as User;
@@ -35,12 +35,12 @@ export class DatabaseStorage implements IStorage {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     await connectToDatabase();
-    const user = await UserModel.findOne({ username }).lean();
+    const user = await UserModel.findOne({ username }).lean() as any;
     
     if (!user) return undefined;
     
     return {
-      id: parseInt(user._id.toString()),
+      id: user._id.toString(),
       username: user.username,
       password: user.password
     } as User;
@@ -56,7 +56,7 @@ export class DatabaseStorage implements IStorage {
     const savedUser = await newUser.save();
     
     return {
-      id: parseInt(savedUser._id.toString()),
+      id: savedUser._id.toString(),
       username: savedUser.username,
       password: savedUser.password
     } as User;
@@ -113,12 +113,12 @@ export class DatabaseStorage implements IStorage {
   
   async getUrlByShortCode(shortCode: string): Promise<Url | undefined> {
     await connectToDatabase();
-    const url = await UrlModel.findOne({ shortCode }).lean();
+    const url = await UrlModel.findOne({ shortCode }).lean() as any;
     
     if (!url) return undefined;
     
     return {
-      id: parseInt(url._id.toString()),
+      id: url._id.toString(),
       shortCode: url.shortCode,
       longUrl: url.longUrl,
       customAlias: url.customAlias,
@@ -140,10 +140,10 @@ export class DatabaseStorage implements IStorage {
     const urls = await UrlModel.find({})
       .sort({ createdAt: -1 })
       .limit(limit)
-      .lean();
+      .lean() as any[];
     
     return urls.map(url => ({
-      id: parseInt(url._id.toString()),
+      id: url._id.toString(),
       shortCode: url.shortCode,
       longUrl: url.longUrl,
       customAlias: url.customAlias,
