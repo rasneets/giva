@@ -53,7 +53,7 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  if (app.get("env") === "development") {
+  if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
   } else {
     // Serve static files from the dist/public directory
@@ -65,12 +65,15 @@ app.use((req, res, next) => {
     });
   }
 
-  const port = process.env.PORT || 3000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
+  // For Vercel, we don't need to call server.listen()
+  if (process.env.NODE_ENV !== "production") {
+    const port = process.env.PORT || 3000;
+    server.listen({
+      port,
+      host: "0.0.0.0",
+      reusePort: true,
+    }, () => {
+      log(`serving on port ${port}`);
+    });
+  }
 })();
